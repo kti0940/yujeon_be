@@ -88,6 +88,8 @@
 
 ## 🧩 목업(WIP)
 - [FIGMA WIREFRAME](https://www.figma.com/file/grSqU88N398HLUf1sBt1xb/nbcamp_%EC%9C%A0%ED%99%94%EC%A0%9C%EC%9E%91?node-id=0%3A1)
+![nbcamp_유화제작 – Figma - Chrome 2022-06-28 오후 5_00_55](https://user-images.githubusercontent.com/97969957/176126386-c4fac157-db9d-4b9b-a28e-538cc06f92ed.png)
+
 ## 📜 일정(WIP)
 1. ver.1.0
     - 회원가입
