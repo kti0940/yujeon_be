@@ -101,7 +101,7 @@
 
 ## 💾 ERD(WIP)
     
-    ![스크린샷 2022-06-28 오후 4 17 19](https://user-images.githubusercontent.com/97969957/176123719-739766e3-0466-4887-99d8-4e573f78e4ad.png)
+![스크린샷 2022-06-28 오후 4 17 19](https://user-images.githubusercontent.com/97969957/176123719-739766e3-0466-4887-99d8-4e573f78e4ad.png)
 
     1. UserModel
         - username : CharField(20)
