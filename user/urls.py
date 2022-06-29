@@ -11,4 +11,5 @@ urlpatterns = [
     path('logout/', views.UserAPIView.as_view()),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('model/', views.ModelView.as_view(), name='deep_learning'),
 ]

@@ -4,6 +4,8 @@ from rest_framework.response import Response
 from django.contrib.auth import login, logout, authenticate
 from user.serializers import UserSignUpSerializer
 
+import os
+
 
 # Create your views here.
 
@@ -50,3 +52,8 @@ class UserAPIView(APIView):
     def delete(self, request):
         logout(request)
         return Response({"로그아웃 성공 안녕히가세요"})
+
+class ModelView(APIView):
+    def post(self, request):
+        os.system("dir")
+        return Response("이미지 WIP")
