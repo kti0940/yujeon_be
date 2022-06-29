@@ -5,9 +5,14 @@ from rest_framework import permissions, status
 from django.contrib.auth import login, logout, authenticate
 from user.serializers import UserSignUpSerializer
 
+<<<<<<< HEAD
+import os
+
+=======
 from user.jwt_claim_serializer import YujeonTokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.authentication import JWTAuthentication
+>>>>>>> main
 
 
 # JWT 커스터마이저 시리얼라이저
@@ -62,3 +67,13 @@ class UserAPIView(APIView):
         logout(request)
         return Response({"로그아웃 성공 안녕히가세요"})
 
+class ModelView(APIView):
+    def post(self, request):
+        print("머신러닝 모델 셋업")
+        os.system("dir")
+        # os.system("cd ./style-transfer-pytorch")
+        os.chdir("style-transfer-pytorch")
+        os.system("dir")
+        os.system("style_transfer input_image.jpg input_style.jpg")
+        os.system('taskkill /f /im python.exe')
+        return Response("이미지 WIP")
