@@ -5,14 +5,11 @@ from rest_framework import permissions, status
 from django.contrib.auth import login, logout, authenticate
 from user.serializers import UserSignUpSerializer
 
-<<<<<<< HEAD
 import os
 
-=======
 from user.jwt_claim_serializer import YujeonTokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.authentication import JWTAuthentication
->>>>>>> main
 
 
 # JWT 커스터마이저 시리얼라이저
@@ -20,9 +17,9 @@ class YujeonTokenObtainPairView(TokenObtainPairView):
     serializer_class = YujeonTokenObtainPairSerializer
 
 class UserView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    # permission_classes = [permissions.IsAuthenticated]
     
-    authentication_classes = [JWTAuthentication]
+    # authentication_classes = [JWTAuthentication]
     
     def get(self, request):
         user = request.user
@@ -70,10 +67,9 @@ class UserAPIView(APIView):
 class ModelView(APIView):
     def post(self, request):
         print("머신러닝 모델 셋업")
-        os.system("dir")
-        # os.system("cd ./style-transfer-pytorch")
-        os.chdir("style-transfer-pytorch")
-        os.system("dir")
-        os.system("style_transfer input_image.jpg input_style.jpg")
-        os.system('taskkill /f /im python.exe')
+        os.system("dir") # 현재 위치에 존재하는 파일 확인
+        os.chdir("style-transfer-pytorch") # 터미널 cd 커맨드와 동일함 -> 폴더 이동
+        os.system("dir") # 폴더 이동했는지 한번 더 확인했음
+        os.system("style_transfer input_img.jpg input_style.jpg") # 이게 모델 돌리는 한줄 코드 이거면 끝
+        os.system('taskkill /f /im python.exe') # 파일 종료시키기
         return Response("이미지 WIP")
