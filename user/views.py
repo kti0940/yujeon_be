@@ -1,15 +1,29 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework import permissions, status
 from django.contrib.auth import login, logout, authenticate
 from user.serializers import UserSignUpSerializer
 
+<<<<<<< HEAD
 import os
 
+=======
+from user.jwt_claim_serializer import YujeonTokenObtainPairSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.authentication import JWTAuthentication
+>>>>>>> main
 
-# Create your views here.
+
+# JWT 커스터마이저 시리얼라이저
+class YujeonTokenObtainPairView(TokenObtainPairView):
+    serializer_class = YujeonTokenObtainPairSerializer
 
 class UserView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    
+    authentication_classes = [JWTAuthentication]
+    
     def get(self, request):
         user = request.user
         print(user)
