@@ -55,5 +55,11 @@ class UserAPIView(APIView):
 
 class ModelView(APIView):
     def post(self, request):
+        print("머신러닝 모델 셋업")
         os.system("dir")
+        # os.system("cd ./style-transfer-pytorch")
+        os.chdir("style-transfer-pytorch")
+        os.system("dir")
+        os.system("style_transfer input_image.jpg input_style.jpg")
+        os.system('taskkill /f /im python.exe')
         return Response("이미지 WIP")
