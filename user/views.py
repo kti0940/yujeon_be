@@ -4,11 +4,14 @@ from rest_framework.response import Response
 from django.contrib.auth import login, logout, authenticate
 from user.serializers import UserSignUpSerializer
 
+
 # Create your views here.
 
 class UserView(APIView):
     def get(self, request):
-        pass
+        user = request.user
+        print(user)
+        return Response({"message":"get !!"})
     
     # 회원가입 
     def post(self, request):
