@@ -22,8 +22,8 @@ class UserView(APIView):
     # authentication_classes = [JWTAuthentication]
     
     def get(self, request):
-        user = request.user
-        print(user)
+        # user = request.user
+        # print(user)
         return Response({"message":"get !!"})
     
     # 회원가입 
@@ -37,7 +37,8 @@ class UserView(APIView):
             return Response({"message": "회원가입 실패"})
 
     def put(self, request):
-        pass
+        print(request.data)
+        return Response({"message":"put"})
 
     def delete(self, request):
         pass
