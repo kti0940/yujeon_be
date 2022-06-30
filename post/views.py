@@ -3,17 +3,22 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
+# from post.serializers import PostGetSerializer, PostPostSerialize
 from post.serializers import PostSerializer
 from .models import Post as PostModel
 
 
 # Create your views here.
 class PostView(APIView):
-    # 포스트 조회
-    
+    def get(self, request):
+        posts = PostModel.objects.all()
+        return Response(PostSerializer(posts, many=True).data)
+
+ 
     # 포스트 업로드
     def post(self, request):
         request.data['artist'] = request.user.id
+        print(f'리퀘스트 데이터 -> {request.data}')
         post_serializer = PostSerializer(data=request.data)
 
         if post_serializer.is_valid():
