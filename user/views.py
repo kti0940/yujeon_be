@@ -74,3 +74,10 @@ class ModelView(APIView):
         os.system("style_transfer input_img.jpg input_style.jpg") # 이게 모델 돌리는 한줄 코드 이거면 끝
         os.system('taskkill /f /im python.exe') # 파일 종료시키기
         return Response("이미지 WIP")
+
+class UserLoginCehck(APIView):
+    # permission_classes = [permissions.IsAuthenticated]
+    # authentication_classes = [JWTAuthentication]
+
+    def get(self, request):
+        return Response({"auth": "Ture"})

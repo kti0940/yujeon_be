@@ -9,6 +9,7 @@ from user.views import YujeonTokenObtainPairView
 
 urlpatterns = [
     path('', views.UserView.as_view()),
+    path('auth/', views.UserLoginCehck.as_view()),
     path('login/', views.UserAPIView.as_view()),
     path('logout/', views.UserAPIView.as_view()),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
