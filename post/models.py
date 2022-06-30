@@ -6,6 +6,7 @@ class Post(models.Model):
     artist = models.ForeignKey('user.User',verbose_name="작성자", on_delete=models.CASCADE)
     title = models.CharField("제목", max_length=50)
     image = models.ImageField(upload_to='')
+    artimage = models.URLField("유화이미지", max_length=200, default='')
     desc = models.TextField("작품설명")
     cost = models.IntegerField("가격")
     is_mine = models.BooleanField(default=True)
