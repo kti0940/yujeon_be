@@ -189,6 +189,8 @@
         - 포스트 모델 like 필드 M2M 추가하기
     - LikeModel 추가
     
+![내배캠_프로젝트 유전 - Chrome 2022-07-01 오전 10_55_43](https://user-images.githubusercontent.com/97969957/176807782-07ead5df-a8fc-4570-a941-d3c7c2747847.png)
+    
 3. API 명세 추가
     - class LikeView 좋아요API (POST)
     - class PostView 포인트 모델 save 적용확인 (POST)
