@@ -195,3 +195,7 @@
     - class LikeView 좋아요API (POST)
     - class PostView 포인트 모델 save 적용확인 (POST)
     - class PostView 가격 적용 (GET)
+    
+[ver.1.1.pdf](https://github.com/tunEmvegnomb/yujeon_be/files/9024522/ver.1.1.pdf)
+
+
