@@ -18,8 +18,8 @@ class YujeonTokenObtainPairView(TokenObtainPairView):
 
 class UserView(APIView):
     # permission_classes = [permissions.IsAuthenticated]
-    
     # authentication_classes = [JWTAuthentication]
+    
     
     def get(self, request):
         # user = request.user
