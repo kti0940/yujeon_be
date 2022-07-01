@@ -5,7 +5,7 @@ from user.models import User as UserModel
 class PostSerializer(serializers.ModelSerializer):
     artist_name = serializers.SerializerMethodField()
     def get_artist_name(self, obj):
-        return obj.artist.username
+        return obj.artist.nickname
 
     class Meta:
         model = PostModel
