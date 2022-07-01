@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		},
+		{
+			"path": "..\\..\\yujeon_fe"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "yujeon_fe"
+	}
+}
