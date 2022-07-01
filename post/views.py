@@ -39,5 +39,30 @@ class PostView(APIView):
             return Response(post_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
     # 포스트 삭제
-    def delete(self, request):
+    def delete(self, request, post_id):
+        post = PostModel.objects.get(id=post_id)
+        post.delete()
         return Response({'message': '삭제 성공!'})
+
+class PostLikeView(APIView):
+    def post(self, request, post_id):
+        user = request.user
+        post = PostModel.objects.get(id=post_id)
+        likes = post.like.all()
+        like_lists = []
+        for like in likes:
+            like_lists.append(like.id)
+        if user.id in like_lists:
+            post.like.remove(user)
+            return Response({'message': '좋아요 취소!'})
+        else:
+            post.like.add(user)
+            return Response({'message': '좋아요!'})
+
+
+class PostDetailView(APIView):
+    def post(self, request):
+        postid = request.data['id']
+        post = PostModel.objects.get(id=postid)
+        serializer = PostSerializer(post).data 
+        return Response(serializer)
