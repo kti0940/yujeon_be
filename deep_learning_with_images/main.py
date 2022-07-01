@@ -3,10 +3,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os
 
-def get_input_image(request):
-    INPUT_IMAGE = request.session['input_image']    
-    print(f"INPUT_IMAGE->{INPUT_IMAGE}")
-    return INPUT_IMAGE
+# def get_input_image(request):
+#     INPUT_IMAGE = request.session['input_image']    
+#     print(f"INPUT_IMAGE->{INPUT_IMAGE}")
+#     return INPUT_IMAGE
+
+
 
 # net = cv2.dnn.readNetFromTorch('models/eccv16/starry_night.t7')
 net = cv2.dnn.readNetFromTorch('models/eccv16/la_muse.t7')
@@ -15,8 +17,7 @@ net = cv2.dnn.readNetFromTorch('models/eccv16/la_muse.t7')
 # net = cv2.dnn.readNetFromTorch('models/feathers.t7')
 # img = cv2.imread('imgs/01.jpg')
 
-INPUT_IMAGE=get_input_image()
-img = cv2.imread(f'../media/uploads/{INPUT_IMAGE}')
+img = cv2.imread(f'../media/uploads/input.jpg')
 
 h, w, c = img.shape
 img = cv2.resize(img, dsize=(500, int(h / w * 500)))
