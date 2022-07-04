@@ -2,19 +2,31 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 import os
-
+import random
 # def get_input_image(request):
 #     INPUT_IMAGE = request.session['input_image']    
 #     print(f"INPUT_IMAGE->{INPUT_IMAGE}")
 #     return INPUT_IMAGE
 
 
+net_list = [
+    "starry_night.t7",
+    "la_muse.t7",
+    "the_wave.t7",
+    "composition_vii.t7",
+    "feathers.t7",
+    "mosaic.t7",
+    "the_scream.t7",
+    "udine.t7",
+    "composition_vii.t7"
+]
+n = len(net_list)
+rand_num = random.randint(0,n-1)
+print(net_list[rand_num])
+net = cv2.dnn.readNetFromTorch(f'models/{net_list[rand_num]}')
+print(f"랜덤 모델 -> {net}")
 
-# net = cv2.dnn.readNetFromTorch('models/eccv16/starry_night.t7')
-net = cv2.dnn.readNetFromTorch('models/eccv16/la_muse.t7')
-# net = cv2.dnn.readNetFromTorch('models/eccv16/the_wave.t7')
-# net = cv2.dnn.readNetFromTorch('models/eccv16/composition_vii.t7')
-# net = cv2.dnn.readNetFromTorch('models/feathers.t7')
+
 # img = cv2.imread('imgs/01.jpg')
 
 img = cv2.imread(f'../media/uploads/input.jpg')

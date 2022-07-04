@@ -24,12 +24,13 @@ import boto3
 
 class PostView(APIView):
     def get(self, request):
-        posts = PostModel.objects.all()
+        posts = PostModel.objects.filter(is_exposure=True).order_by('-created_at')
         return Response(PostSerializer(posts, many=True).data)
 
  
     # 포스트 업로드
     def post(self, request):
+        print(f"request_data->{request.data}")
         request.data['artist'] = request.user.id
         
         post_serializer = PostSerializer(data=request.data)
@@ -89,13 +90,13 @@ class PostDetailView(APIView):
         serializer = PostSerializer(post).data 
         return Response(serializer)
     
-class purchase_art(APIView):
+class PurchaseArt(APIView):
     '''
     1. 구매할 그림의 값을 가져옴
     2. 구매하기를 누르면 나의 포인트 - 그림 포인트로 구매함
+    5. 상대방 유저는 컬렉션에서 삭제
     3. 내 컬렉션 db에 내 유저 아이디로 레코드 추가
     4. 상대방 유저에게 내가 구매한 포인트만큼 포인트 추가됨
-    5. 상대방 유저는 컬렉션에서 삭제
     '''
     def post(self, request, id):
         # 컬렉션의 가격 가져오기
@@ -120,26 +121,80 @@ class purchase_art(APIView):
         if owner_user == target_art.owner:
             "구매불가"
             return Response("이미 소유한 미술품입니다")
+        
         # 2번 분기. 포인트가 부족할 경우 구매 불가 
         if not owner_user_point >= target_art_price:
             "구매불가"
-            # return Response("포인트가 부족합니다")
-        #구매가능
+            return Response("포인트가 부족합니다")
+        
+        #구매가능한 상태
         print(f"오너 포인트 차감 전->{owner_user.point}")
+        
+        # 구매자의 포인트 차감
         owner_user.point = owner_user_point - target_art_price
         owner_user.save()
         print(f"오너 포인트 차감 후->{owner_user.point}")
+        
+        
+        """
+        구매자 데이터베이스 추가, 판매자 데이터베이스 삭제
+        1. 구매자는 판매자와 동일한 PostModel의 레코드 생성
+        2. 구매자의 PostModel 레코드의 is_mine 필드는 True
+        3. 판매자의 PostModel 레코드의 is_mine 필드는 False
+        4. 브라우저 리프레시
+        ---
+        구매했던 을의 그림을 병이 구매한 케이스
+        1.  병은 을과 동일한 PostModel의 레코드 생성
+        2. 구매자의 PostModel 레코드의 is_mine 필드는 True
+        3. 판매자의 PostModel 레코드의 is_mine 필드는 False
+        4. 브라우저 리프레시
+        """
+        
+        # 판매자 접근 권한 지우기
+        seller_post = PostModel.objects.get(id=target_art.post_id)
+        
+        seller_post.is_mine = False
+        seller_post.save()
+
+        # change_owner = PostModel.objects.get(id=target_art.owner.post_id)
+
+        buyer_info = {
+            "artist":owner_user,
+            "title": seller_post.title,
+            "image": seller_post.image,
+            "artimage": seller_post.image,
+            "desc" : seller_post.desc,
+            "cost" : seller_post.cost,
+            "is_mine" : True,
+            "created_at" : seller_post.created_at,
+            "is_exposure" : seller_post.is_exposure,
+            "on_sale" : seller_post.on_sale,
+        }
+        buyer_post = PostModel.objects.create(**buyer_info)
+        buyer_post.save()
+        
+        # 소유주 변경
         target_art.owner = owner_user
+        target_art.post = buyer_post
         target_art.save()
         print(f"owner_user_point->{owner_user.point}")
         
         # 포인트 판매자에게 추가
-        # print(f"오리지널 아티스트->{original_artist.username}")
-        # print(f"아트 소유주->{target_art.owner.username}")
-        # reward_point = original_artist.point + target_art_price
-        # original_artist.point = reward_point
-        # original_artist.save()        
-        return Response(f"{owner_user}의 남은 잔여 포인트는{owner_user_point}입니다")
+        print(f"오리지널 아티스트->{original_artist.username}")
+        print(f"아트 소유주->{target_art.owner.username}")
+        reward_point = original_artist.point + target_art_price
+        original_artist.point = reward_point
+        original_artist.save()        
+        #여기에서 변경된 소유주 오브젝트 불러서 is_mine False 처리 하면 되지않음?
+
+        
+        # 포인트 판매자에게 추가
+        print(f"오리지널 아티스트->{original_artist.username}")
+        print(f"아트 소유주->{target_art.owner.username}")
+        reward_point = original_artist.point + target_art_price
+        original_artist.point = reward_point
+        original_artist.save()        
+        return Response(f"{owner_user}의 남은 잔여 포인트는{owner_user.point}입니다")
         
 
 class CollectionView(APIView):

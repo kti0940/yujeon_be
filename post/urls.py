@@ -10,5 +10,5 @@ urlpatterns = [
     path('like/<post_id>',views.PostLikeView.as_view()),
     path('detail/',views.PostDetailView.as_view()),
     path('collection/', views.CollectionView.as_view()),
-    path('purchase/<int:id>', views.purchase_art.as_view()),
+    path('purchase/<int:id>', views.PurchaseArt.as_view()),
 ]
