@@ -16,7 +16,7 @@ import boto3
 
 class PostView(APIView):
     def get(self, request):
-        posts = PostModel.objects.filter(is_mine=True).order_by('-created_at')
+        posts = PostModel.objects.all()
         return Response(PostSerializer(posts, many=True).data)
 
  
@@ -28,12 +28,9 @@ class PostView(APIView):
         
         if post_serializer.is_valid():
             post_serializer.save()
-            
             return Response(post_serializer.data, status=status.HTTP_200_OK)
         else:
             return Response(post_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        
-        
         
     # 포스트 수정
     def put(self, request, post_id):
@@ -63,19 +60,9 @@ class PostLikeView(APIView):
             like_lists.append(like.id)
         if user.id in like_lists:
             post.like.remove(user)
-            # sub price like
-            post.cost = post.cost - 1
-            print(f"post.cost->{post.cost}")
-            post.save()
             return Response({'message': '좋아요 취소!'})
         else:
             post.like.add(user)
-            # add price like
-            post.cost = post.cost + 1
-            print(f"post.cost->{post.cost}")
-            post.save()
-            # PostModel 포인트 1추가
-            
             return Response({'message': '좋아요!'})
 
 
