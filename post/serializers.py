@@ -40,3 +40,12 @@ class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = PostModel
         fields = "__all__"
+        
+        
+    
+    
+class CollectionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CollectionModel
+        fields = "__all__"
+    

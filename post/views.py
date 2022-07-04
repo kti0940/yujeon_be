@@ -5,12 +5,17 @@ from rest_framework import status
 import json
 import datetime
 import os
+from post import serializers
 
 # from post.serializers import PostGetSerializer, PostPostSerialize
-from post.serializers import PostSerializer
-from .models import Post as PostModel
+from post.serializers import PostSerializer, CollectionSerializer
+from .models import (
+        Post as PostModel,
+        Collection as CollectionModel
+                     )
 
 import boto3
+
 
 # Create your views here.
 
@@ -80,3 +85,19 @@ class PostDetailView(APIView):
         post = PostModel.objects.get(id=postid)
         serializer = PostSerializer(post).data 
         return Response(serializer)
+
+class CollectionView(APIView):
+    # 컬렉션 조회하기
+    def get(self, request):
+        my_collection = CollectionModel.objects.filter(owner_id=request.user.id)
+        print(my_collection)
+        serializers_data = CollectionSerializer(my_collection, many=True).data
+        print(serializers_data)
+        return Response(serializers_data)
+    def post(self, request):
+        return Response()
+    def put(self, request):
+        return Response()
+    def delete(self, request):
+        return Response()
+    
