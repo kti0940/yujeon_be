@@ -60,9 +60,17 @@ class PostLikeView(APIView):
             like_lists.append(like.id)
         if user.id in like_lists:
             post.like.remove(user)
+            
+            post.cost -= 1
+            print(f"post.cost 내림 ->{post.cost}")
+            post.save()
             return Response({'message': '좋아요 취소!'})
         else:
             post.like.add(user)
+            
+            post.cost += 1
+            post.save()
+            print(f"post.cost 올림 ->{post.cost}")
             return Response({'message': '좋아요!'})
 
 
