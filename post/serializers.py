@@ -25,6 +25,8 @@ class PostSerializer(serializers.ModelSerializer):
         print(f"post.artist->{post.artist}")
         upload_collection = CollectionModel.objects.create(post=post, owner=post.artist)
         return post
+    
+        
 
     artist_name = serializers.SerializerMethodField()
     def get_artist_name(self, obj):

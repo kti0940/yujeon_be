@@ -36,6 +36,7 @@ class User(AbstractBaseUser):
     nickname = models.CharField("닉네임", max_length=30, default='')
     email = models.EmailField("이메일", max_length=100, default='')
     join_date = models.DateTimeField("가입일", auto_now_add=True)
+    point = models.IntegerField("포인트", default=0)
 
     is_active = models.BooleanField(default=True)
 
