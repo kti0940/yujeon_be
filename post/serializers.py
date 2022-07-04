@@ -45,6 +45,12 @@ class PostSerializer(serializers.ModelSerializer):
     
     
 class CollectionSerializer(serializers.ModelSerializer):
+    post = PostSerializer()
+    owner_names = serializers.SerializerMethodField()
+    def get_owner_names(self, obj):
+        return obj.owner.nickname
+        
+
     class Meta:
         model = CollectionModel
         fields = "__all__"

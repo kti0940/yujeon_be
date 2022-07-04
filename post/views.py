@@ -90,9 +90,9 @@ class CollectionView(APIView):
     # 컬렉션 조회하기
     def get(self, request):
         my_collection = CollectionModel.objects.filter(owner_id=request.user.id)
-        print(my_collection)
+        # print(my_collection)
         serializers_data = CollectionSerializer(my_collection, many=True).data
-        print(serializers_data)
+        # print(serializers_data)
         return Response(serializers_data)
     def post(self, request):
         return Response()
