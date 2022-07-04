@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework import permissions, status
 from django.contrib.auth import login, logout, authenticate
 from post import serializers
-from user.serializers import UserSignUpSerializer
+from user.serializers import UserSignUpSerializer, UserInfoSerializer
 
 import os
 
@@ -23,9 +23,8 @@ class UserView(APIView):
     
     
     def get(self, request):
-        # user = request.user
-        # print(user)
-        return Response({"message":"get !!"})
+        user = request.user
+        return Response(UserInfoSerializer(user).data)
     
     # 회원가입 
     def post(self, request):

@@ -20,3 +20,8 @@ class UserSignUpSerializer(serializers.ModelSerializer):
         user.set_password(p)
         user.save()
         return user
+
+class UserInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserModel
+        fields = ["id", "nickname", "email", "join_date", "point"]
