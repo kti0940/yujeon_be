@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 CORS_ORIGIN_WHITELIST = (
     'http://127.0.0.1:5500',
     'http://127.0.0.1:8000',
+    'http://localhost:5500'
 )
 
 CORS_ALLOW_METHODS = (
@@ -192,7 +193,7 @@ AUTH_USER_MODEL = 'user.User'
 
 SIMPLE_JWT = {
 		# Access 토큰 유효 시간 설정하기
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=120),
 		# Refresh 토큰 유효 시간 설정하기
     'REFRESH_TOKEN_LIFETIME': timedelta(days=60),
 

@@ -19,5 +19,5 @@ class Post(models.Model):
         return self.title
 
 class Collection(models.Model):
-    post =models.ForeignKey('post', verbose_name="게시글", on_delete=models.CASCADE)
+    post =models.OneToOneField('post', verbose_name="게시글", on_delete=models.CASCADE)
     owner = models.ForeignKey('user.User', verbose_name="소유자", on_delete=models.CASCADE)

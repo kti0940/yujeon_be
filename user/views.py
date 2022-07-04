@@ -3,6 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import permissions, status
 from django.contrib.auth import login, logout, authenticate
+from post import serializers
 from user.serializers import UserSignUpSerializer
 
 import os
@@ -72,4 +73,5 @@ class UserLoginCehck(APIView):
     # authentication_classes = [JWTAuthentication]
 
     def get(self, request):
-        return Response({"auth": "Ture"})
+        # serializer = UserSerializer(data=)
+        return Response({"auth": "True"})
