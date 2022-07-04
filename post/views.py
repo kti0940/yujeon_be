@@ -154,6 +154,7 @@ class PurchaseArt(APIView):
         seller_post = PostModel.objects.get(id=target_art.post_id)
         
         seller_post.is_mine = False
+        seller_post.is_exposure = False
         seller_post.save()
 
         # change_owner = PostModel.objects.get(id=target_art.owner.post_id)
