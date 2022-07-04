@@ -103,7 +103,8 @@ class purchase_art(APIView):
         print(f"target_art->{target_art}")
         target_art_price = target_art.post.cost
         print(f"target_art_price->{target_art_price}")
-        # print(f"타겟의 값이 얼마냐 이거야 -> {target_art_price}")
+        original_artist = UserModel.objects.get(id=target_art.owner.id)
+        
         
         # 컬렉션 구매
         user = request.user
@@ -122,19 +123,24 @@ class purchase_art(APIView):
         # 2번 분기. 포인트가 부족할 경우 구매 불가 
         if not owner_user_point >= target_art_price:
             "구매불가"
-            return Response("포인트가 부족합니다")
+            # return Response("포인트가 부족합니다")
         #구매가능
-        print(f"오너 포인트 차감 전->{owner_user_point}")
-        owner_user_point = owner_user_point - target_art_price
+        print(f"오너 포인트 차감 전->{owner_user.point}")
+        owner_user.point = owner_user_point - target_art_price
         owner_user.save()
-        print(f"오너 포인트 차감 후->{owner_user_point}")
+        print(f"오너 포인트 차감 후->{owner_user.point}")
         target_art.owner = owner_user
         target_art.save()
+        print(f"owner_user_point->{owner_user.point}")
         
+        # 포인트 판매자에게 추가
+        # print(f"오리지널 아티스트->{original_artist.username}")
+        # print(f"아트 소유주->{target_art.owner.username}")
+        # reward_point = original_artist.point + target_art_price
+        # original_artist.point = reward_point
+        # original_artist.save()        
         return Response(f"{owner_user}의 남은 잔여 포인트는{owner_user_point}입니다")
         
-        print(f"유저의 포인트는 -> {user_point}")
-        return Response({"target_price":target_art_price})
 
 class CollectionView(APIView):
     # 컬렉션 조회하기
