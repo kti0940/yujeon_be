@@ -24,9 +24,14 @@ class PostSerializer(serializers.ModelSerializer):
         print(f"post.id->{post.id}")
         print(f"post.artist->{post.artist}")
         upload_collection = CollectionModel.objects.create(post=post, owner=post.artist)
-        return post
-    
+
+        target_owner = UserModel.objects.get(id=post.artist.id)
+        print(f"사용자는 누구? ->{target_owner}")
+        target_owner.point = target_owner.point + 3
+        target_owner.save()
+        print(f"포인트 세이브? ->{target_owner.point}")
         
+        return post
 
     artist_name = serializers.SerializerMethodField()
     def get_artist_name(self, obj):
