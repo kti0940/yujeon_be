@@ -13,6 +13,9 @@ from .models import (
         Post as PostModel,
         Collection as CollectionModel
                      )
+from user.models import (
+        User as UserModel
+)
 
 import boto3
 
@@ -85,6 +88,53 @@ class PostDetailView(APIView):
         post = PostModel.objects.get(id=postid)
         serializer = PostSerializer(post).data 
         return Response(serializer)
+    
+class purchase_art(APIView):
+    '''
+    1. 구매할 그림의 값을 가져옴
+    2. 구매하기를 누르면 나의 포인트 - 그림 포인트로 구매함
+    3. 내 컬렉션 db에 내 유저 아이디로 레코드 추가
+    4. 상대방 유저에게 내가 구매한 포인트만큼 포인트 추가됨
+    5. 상대방 유저는 컬렉션에서 삭제
+    '''
+    def post(self, request, id):
+        # 컬렉션의 가격 가져오기
+        target_art = CollectionModel.objects.get(id=id)
+        print(f"target_art->{target_art}")
+        target_art_price = target_art.post.cost
+        print(f"target_art_price->{target_art_price}")
+        # print(f"타겟의 값이 얼마냐 이거야 -> {target_art_price}")
+        
+        # 컬렉션 구매
+        user = request.user
+        print(f"user->{user}")
+        owner_user = UserModel.objects.get(id=user.id)
+        print(f"owner_user->{owner_user}")
+        owner_user_point = owner_user.point
+        print(f"owner_user_point->{owner_user_point}")
+        
+        print(f"유저는 누구입니까->{user}")
+        
+        # 1번 분기. 구매자와 소유자가 같을 경우 구매 불가
+        if owner_user == target_art.owner:
+            "구매불가"
+            return Response("이미 소유한 미술품입니다")
+        # 2번 분기. 포인트가 부족할 경우 구매 불가 
+        if not owner_user_point >= target_art_price:
+            "구매불가"
+            return Response("포인트가 부족합니다")
+        #구매가능
+        print(f"오너 포인트 차감 전->{owner_user_point}")
+        owner_user_point = owner_user_point - target_art_price
+        owner_user.save()
+        print(f"오너 포인트 차감 후->{owner_user_point}")
+        target_art.owner = owner_user
+        target_art.save()
+        
+        return Response(f"{owner_user}의 남은 잔여 포인트는{owner_user_point}입니다")
+        
+        print(f"유저의 포인트는 -> {user_point}")
+        return Response({"target_price":target_art_price})
 
 class CollectionView(APIView):
     # 컬렉션 조회하기
@@ -100,4 +150,3 @@ class CollectionView(APIView):
         return Response()
     def delete(self, request):
         return Response()
-    
