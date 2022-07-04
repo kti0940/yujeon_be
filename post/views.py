@@ -2,15 +2,18 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-
+import json
+import datetime
 import os
 
 # from post.serializers import PostGetSerializer, PostPostSerialize
 from post.serializers import PostSerializer
 from .models import Post as PostModel
 
+import boto3
 
 # Create your views here.
+
 class PostView(APIView):
     def get(self, request):
         posts = PostModel.objects.all()
@@ -20,14 +23,11 @@ class PostView(APIView):
     # 포스트 업로드
     def post(self, request):
         request.data['artist'] = request.user.id
-        print(f'리퀘스트 데이터 -> {request.data}')
+        
         post_serializer = PostSerializer(data=request.data)
-
+        
         if post_serializer.is_valid():
-            request.data['image']._set_name("input.jpg")
             post_serializer.save()
-            run_model = ModelView()
-            run_model.post(request)
             return Response(post_serializer.data, status=status.HTTP_200_OK)
         else:
             return Response(post_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -39,6 +39,7 @@ class PostView(APIView):
         
         if post_serializer.is_valid():
             post_serializer.save()
+            
             return Response(post_serializer.data, status=status.HTTP_200_OK)
         else:
             return Response(post_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -47,20 +48,7 @@ class PostView(APIView):
     def delete(self, request):
         return Response({'message': '삭제 성공!'})
     
-class ModelView(APIView):
-    def post(self, request):
-        print("머신러닝 모델 셋업")
-        # os.system("dir") # 현재 위치에 존재하는 파일 확인
-        os.chdir("deep_learning_with_images") # 터미널 cd 커맨드와 동일함 -> 폴더 이동
-        # os.system("dir") # 폴더 이동했는지 한번 더 확인했음
-        os.system('python main.py') # 머신러닝 모델 실행시키기
-        os.chdir("..")
-        os.remove('media/uploads/input.jpg')
-        return Response("이미지 WIP")
-    def delete(self, request, post_id):
-        post = PostModel.objects.get(id=post_id)
-        post.delete()
-        return Response({'message': '삭제 성공!'})
+
 
 class PostLikeView(APIView):
     def post(self, request, post_id):
