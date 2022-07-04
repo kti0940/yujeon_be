@@ -185,10 +185,29 @@
     - UserModel 수정
         - 사용자 모델 포인트 필드 추가하기
     - PostModel 수정
-        - 포스트 모델 가격 디폴트 5로 수정하기
-        - 포스트 모델 like 필드 M2M 추가하기
-        - 포스트 모델 판매여부, 노출여부 필드 추가하기
+        - 포스트 모델 가격 디폴트 3로 수정하기
+        - 포스트 모델 판매여부(on_sale), 노출여부(is_exposure) 필드 추가하기
     - LikeModel 추가
+
+def purchase_art(self, request):
+    target_art = Purchase()
+    target_art.post()
+    target_art.delete()
+
+class Purchase(APIView):
+    def post(self, request):
+        내 컬렉션 추가 로직
+        포스트테이블에서 해당 미술품의 아티스트 조회
+        데이터베이스에 컬렉션 레코드 하나 추가
+        포스트 테이블에서 해당 미술품 is_mine=False
+        return     
+    def delete(self, request):
+        타겟 컬렉션 삭제 로직
+        if-> is_mine=False
+        포스트.object.get
+        데이터베이스 컬렉션 레코드 하나 제거
+        return 
+
     
 ![내배캠_프로젝트 유전 - Chrome 2022-07-01 오전 10_57_00 (2)](https://user-images.githubusercontent.com/97969957/176808168-5044f489-58e3-4ae3-adfc-8b68ead778ff.png)
 
