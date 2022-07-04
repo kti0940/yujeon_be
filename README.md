@@ -190,7 +190,13 @@
         - 포스트 모델 판매여부, 노출여부 필드 추가하기
     - LikeModel 추가
     
+![내배캠_프로젝트 유전 - Chrome 2022-07-01 오전 10_57_00 (2)](https://user-images.githubusercontent.com/97969957/176808168-5044f489-58e3-4ae3-adfc-8b68ead778ff.png)
+
 3. API 명세 추가
     - class LikeView 좋아요API (POST)
     - class PostView 포인트 모델 save 적용확인 (POST)
     - class PostView 가격 적용 (GET)
+    
+**📜 [ver.1.1.pdf](https://github.com/tunEmvegnomb/yujeon_be/files/9024522/ver.1.1.pdf)**
+
+
