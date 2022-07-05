@@ -19,18 +19,14 @@ from user.models import (
 
 import boto3
 
-
-# Create your views here.
-
 class PostView(APIView):
     def get(self, request):
         
         posts = PostModel.objects.filter(is_mine=True, is_exposure=True).order_by('-created_at')
+        
         print(f"IMAGE POSTS->{posts}")
         return Response(PostSerializer(posts, many=True).data)
     
-
- 
     # 포스트 업로드
     def post(self, request):
         print(f"request_data->{request.data}")
@@ -61,8 +57,6 @@ class PostView(APIView):
         post = PostModel.objects.get(id=post_id)
         post.delete()
         return Response({'message': '삭제 성공!'})
-    
-
 
 class PostLikeView(APIView):
     def post(self, request, post_id):
@@ -87,7 +81,6 @@ class PostLikeView(APIView):
             print(f"post.cost 올림 ->{post.cost}")
             return Response({'message': '좋아요!'})
 
-
 class PostDetailView(APIView):
     def post(self, request):
         postid = request.data['id']
@@ -106,21 +99,13 @@ class PurchaseArt(APIView):
     def post(self, request, id):
         # 컬렉션의 가격 가져오기
         target_art = CollectionModel.objects.get(id=id)
-        print(f"target_art->{target_art}")
         target_art_price = target_art.post.cost
-        print(f"target_art_price->{target_art_price}")
         original_artist = UserModel.objects.get(id=target_art.owner.id)
-        
         
         # 컬렉션 구매
         user = request.user
-        print(f"user->{user}")
         owner_user = UserModel.objects.get(id=user.id)
-        print(f"owner_user->{owner_user}")
         owner_user_point = owner_user.point
-        print(f"owner_user_point->{owner_user_point}")
-        
-        print(f"유저는 누구입니까->{user}")
         
         # 1번 분기. 구매자와 소유자가 같을 경우 구매 불가
         if owner_user == target_art.owner:
@@ -132,14 +117,9 @@ class PurchaseArt(APIView):
             "구매불가"
             return Response({"error":"포인트가 부족합니다"}, status=status.HTTP_400_BAD_REQUEST)
         
-        #구매가능한 상태
-        print(f"오너 포인트 차감 전->{owner_user.point}")
-        
         # 구매자의 포인트 차감
         owner_user.point = owner_user_point - target_art_price
         owner_user.save()
-        print(f"오너 포인트 차감 후->{owner_user.point}")
-        
         
         """
         구매자 데이터베이스 추가, 판매자 데이터베이스 삭제
@@ -175,7 +155,7 @@ class PurchaseArt(APIView):
             "desc" : seller_post.desc,
             "cost" : seller_post.cost,
             "is_mine" : True,
-            "is_exposure" : True,
+            "is_exposure" : False,
             "on_sale" : False,
         }
         buyer_post = PostModel.objects.create(**buyer_info)
@@ -186,34 +166,18 @@ class PurchaseArt(APIView):
         target_art.owner = owner_user
         target_art.post = buyer_post
         target_art.save()
-        print(f"owner_user_point->{owner_user.point}")
         
         # 포인트 판매자에게 추가
-        print(f"오리지널 아티스트->{original_artist.username}")
-        print(f"아트 소유주->{target_art.owner.username}")
         reward_point = original_artist.point + target_art_price
         original_artist.point = reward_point
         original_artist.save()        
-
-              #여기에서 변경된 소유주 오브젝트 불러서 is_mine False 처리 하면 되지않음?
-
-        
-        # 포인트 판매자에게 추가
-        print(f"오리지널 아티스트->{original_artist.username}")
-        print(f"아트 소유주->{target_art.owner.username}")
-        reward_point = original_artist.point + target_art_price
-        original_artist.point = reward_point
-        original_artist.save()        
-        return Response(f"{owner_user}의 남은 잔여 포인트는{owner_user.point}입니다")
-        
+        return Response({"message":f"구매성공! 남은 포인트는 {owner_user.point}입니다"}, status=status.HTTP_200_OK)
 
 class CollectionView(APIView):
     # 컬렉션 조회하기
     def get(self, request):
         my_collection = CollectionModel.objects.filter(owner_id=request.user.id).order_by('-id')
-        # print(my_collection)
         serializers_data = CollectionSerializer(my_collection, many=True).data
-        # print(serializers_data)
         return Response(serializers_data)
     def post(self, request):
         return Response()
