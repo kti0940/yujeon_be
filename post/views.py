@@ -136,7 +136,7 @@ class PurchaseArt(APIView):
         """
         
         # 판매자 접근 권한 지우기
-        seller_post = PostModel.objects.get(id=target_art.post_id)
+        seller_post = PostModel.objects.get(id=target_art.post.id)
         
         seller_post.is_mine = False
         seller_post.is_exposure = False
