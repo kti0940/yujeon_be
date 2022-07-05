@@ -9,11 +9,11 @@ class Post(models.Model):
     artimage = models.URLField("유화이미지", max_length=200, default='')
     desc = models.TextField("작품설명")
     cost = models.IntegerField("가격", default=3)
-    is_mine = models.BooleanField("소유여부", default=True)
+    is_mine = models.BooleanField("소유여부")
     like = models.ManyToManyField(User, related_name='좋아요', blank=True)
     created_at = models.DateTimeField("작성일", auto_now_add=True)
-    is_exposure = models.BooleanField("노출여부", default=True)
-    on_sale = models.BooleanField("판매여부", default=False)
+    is_exposure = models.BooleanField("노출여부")
+    on_sale = models.BooleanField("판매여부", default=True)
     
     def __str__(self):
         return self.title

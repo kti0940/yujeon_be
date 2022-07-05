@@ -11,6 +11,7 @@ import boto3
 class PostSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
+        print(f"이즈마인 제대로 나와라 죽어진짜->{validated_data}")
         validated_data.pop('like')
         userid = 1
         validated_data['image']._set_name("input.jpg")
@@ -36,7 +37,6 @@ class PostSerializer(serializers.ModelSerializer):
     artist_name = serializers.SerializerMethodField()
     def get_artist_name(self, obj):
         return obj.artist.nickname
-
     class Meta:
         model = PostModel
         fields = "__all__"
