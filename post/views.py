@@ -24,9 +24,11 @@ import boto3
 
 class PostView(APIView):
     def get(self, request):
-        posts = PostModel.objects.filter(is_exposure=True).order_by('-created_at')
+        
+        posts = PostModel.objects.filter(is_mine=True, is_exposure=True).order_by('-created_at')
         print(f"IMAGE POSTS->{posts}")
         return Response(PostSerializer(posts, many=True).data)
+    
 
  
     # 포스트 업로드
@@ -55,7 +57,9 @@ class PostView(APIView):
             return Response(post_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
     # 포스트 삭제
-    def delete(self, request):
+    def delete(self, request, post_id):
+        post = PostModel.objects.get(id=post_id)
+        post.delete()
         return Response({'message': '삭제 성공!'})
     
 
@@ -91,7 +95,7 @@ class PostDetailView(APIView):
         serializer = PostSerializer(post).data 
         return Response(serializer)
     
-class PurchaseArt(APIView):
+class PurchaseArt(APIView):    
     '''
     1. 구매할 그림의 값을 가져옴
     2. 구매하기를 누르면 나의 포인트 - 그림 포인트로 구매함
@@ -157,22 +161,25 @@ class PurchaseArt(APIView):
         seller_post.is_mine = False
         seller_post.is_exposure = False
         seller_post.save()
-
-        # change_owner = PostModel.objects.get(id=target_art.owner.post_id)
+        
+        postlike = seller_post.like.all()
+        likelist = []
+        for like in postlike:
+            likelist.append(like.id)
 
         buyer_info = {
             "artist":owner_user,
             "title": seller_post.title,
             "image": seller_post.image,
-            "artimage": seller_post.image,
+            "artimage": seller_post.artimage,
             "desc" : seller_post.desc,
             "cost" : seller_post.cost,
             "is_mine" : True,
-            "created_at" : seller_post.created_at,
-            "is_exposure" : seller_post.is_exposure,
-            "on_sale" : seller_post.on_sale,
+            "is_exposure" : True,
+            "on_sale" : False,
         }
         buyer_post = PostModel.objects.create(**buyer_info)
+        buyer_post.like.add(*likelist)
         buyer_post.save()
         
         # 소유주 변경

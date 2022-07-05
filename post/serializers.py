@@ -37,6 +37,13 @@ class PostSerializer(serializers.ModelSerializer):
     artist_name = serializers.SerializerMethodField()
     def get_artist_name(self, obj):
         return obj.artist.nickname
+    
+    collection_id = serializers.SerializerMethodField()
+    def get_collection_id(self, obj):
+        # print(f"DIR-->{dir(obj.collection)}")
+        print(f"obj.collection.post_id->{obj.collection.post_id}")
+        return obj.collection.post_id
+    
     class Meta:
         model = PostModel
         fields = "__all__"
