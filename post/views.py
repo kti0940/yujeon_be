@@ -25,6 +25,7 @@ import boto3
 class PostView(APIView):
     def get(self, request):
         posts = PostModel.objects.filter(is_exposure=True).order_by('-created_at')
+        print(f"IMAGE POSTS->{posts}")
         return Response(PostSerializer(posts, many=True).data)
 
  
@@ -120,12 +121,12 @@ class PurchaseArt(APIView):
         # 1번 분기. 구매자와 소유자가 같을 경우 구매 불가
         if owner_user == target_art.owner:
             "구매불가"
-            return Response("이미 소유한 미술품입니다")
+            return Response({"error": "이미 소유하신 미술품입니다"}, status=status.HTTP_400_BAD_REQUEST)
         
         # 2번 분기. 포인트가 부족할 경우 구매 불가 
         if not owner_user_point >= target_art_price:
             "구매불가"
-            return Response("포인트가 부족합니다")
+            return Response({"error":"포인트가 부족합니다"}, status=status.HTTP_400_BAD_REQUEST)
         
         #구매가능한 상태
         print(f"오너 포인트 차감 전->{owner_user.point}")
@@ -186,7 +187,8 @@ class PurchaseArt(APIView):
         reward_point = original_artist.point + target_art_price
         original_artist.point = reward_point
         original_artist.save()        
-        #여기에서 변경된 소유주 오브젝트 불러서 is_mine False 처리 하면 되지않음?
+
+              #여기에서 변경된 소유주 오브젝트 불러서 is_mine False 처리 하면 되지않음?
 
         
         # 포인트 판매자에게 추가
