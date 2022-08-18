@@ -24,12 +24,10 @@ class PostView(APIView):
         
         posts = PostModel.objects.filter(is_mine=True, is_exposure=True).order_by('-created_at')
         
-        print(f"IMAGE POSTS->{posts}")
         return Response(PostSerializer(posts, many=True).data)
     
     # 포스트 업로드
     def post(self, request):
-        print(f"request_data->{request.data}")
         request.data['artist'] = request.user.id
         
         post_serializer = PostSerializer(data=request.data)
@@ -70,7 +68,6 @@ class PostLikeView(APIView):
             post.like.remove(user)
             
             post.cost -= 1
-            print(f"post.cost 내림 ->{post.cost}")
             post.save()
             return Response({'message': '좋아요 취소!'})
         else:
@@ -78,7 +75,6 @@ class PostLikeView(APIView):
             
             post.cost += 1
             post.save()
-            print(f"post.cost 올림 ->{post.cost}")
             return Response({'message': '좋아요!'})
 
 class PostDetailView(APIView):
@@ -89,13 +85,6 @@ class PostDetailView(APIView):
         return Response(serializer)
     
 class PurchaseArt(APIView):    
-    '''
-    1. 구매할 그림의 값을 가져옴
-    2. 구매하기를 누르면 나의 포인트 - 그림 포인트로 구매함
-    5. 상대방 유저는 컬렉션에서 삭제
-    3. 내 컬렉션 db에 내 유저 아이디로 레코드 추가
-    4. 상대방 유저에게 내가 구매한 포인트만큼 포인트 추가됨
-    '''
     def post(self, request, id):
         # 컬렉션의 가격 가져오기
         target_art = CollectionModel.objects.get(id=id)
@@ -120,20 +109,6 @@ class PurchaseArt(APIView):
         # 구매자의 포인트 차감
         owner_user.point = owner_user_point - target_art_price
         owner_user.save()
-        
-        """
-        구매자 데이터베이스 추가, 판매자 데이터베이스 삭제
-        1. 구매자는 판매자와 동일한 PostModel의 레코드 생성
-        2. 구매자의 PostModel 레코드의 is_mine 필드는 True
-        3. 판매자의 PostModel 레코드의 is_mine 필드는 False
-        4. 브라우저 리프레시
-        ---
-        구매했던 을의 그림을 병이 구매한 케이스
-        1.  병은 을과 동일한 PostModel의 레코드 생성
-        2. 구매자의 PostModel 레코드의 is_mine 필드는 True
-        3. 판매자의 PostModel 레코드의 is_mine 필드는 False
-        4. 브라우저 리프레시
-        """
         
         # 판매자 접근 권한 지우기
         seller_post = PostModel.objects.get(id=target_art.post.id)

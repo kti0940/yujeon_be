@@ -18,10 +18,6 @@ class YujeonTokenObtainPairView(TokenObtainPairView):
     serializer_class = YujeonTokenObtainPairSerializer
 
 class UserView(APIView):
-    # permission_classes = [permissions.IsAuthenticated]
-    # authentication_classes = [JWTAuthentication]
-    
-    
     def get(self, request):
         user = request.user
         return Response(UserInfoSerializer(user).data)
@@ -33,11 +29,9 @@ class UserView(APIView):
             serializer.save()
             return Response({"message":"회원가입에 성공했습니다!"})
         else:
-            print(serializer.errors)
             return Response({"message": "회원가입 실패"})
 
     def put(self, request):
-        print(request.data)
         return Response({"message":"put"})
 
     def delete(self, request):
@@ -51,7 +45,6 @@ class UserAPIView(APIView):
         password = request.data.get("password",'')
 
         user = authenticate(request, username=username, password=password)
-        print(user)
         
         if not user:
             return Response({"error": "존재하지 않는 계정이거나 패스워드가 일치하지 않습니다"})
@@ -68,9 +61,6 @@ class UserAPIView(APIView):
 
 
 class UserLoginCehck(APIView):
-    # permission_classes = [permissions.IsAuthenticated]
-    # authentication_classes = [JWTAuthentication]
 
     def get(self, request):
-        # serializer = UserSerializer(data=)
         return Response({"auth": "True"})

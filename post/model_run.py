@@ -3,7 +3,6 @@ import boto3
 import datetime
 
 def model_run():
-        print("머신러닝 모델 셋업")
         # os.system("dir") # 현재 위치에 존재하는 파일 확인
         os.chdir("deep_learning_with_images") # 터미널 cd 커맨드와 동일함 -> 폴더 이동
         # os.system("dir") # 폴더 이동했는지 한번 더 확인했음
@@ -18,7 +17,6 @@ def control_s3(image, user):
     now = now.strftime('%Y%m%d_%H%M%S')
     bucket = "migdracios"
     key = f"images/{user}/{now}.jpg"
-    print(key)
     
     s3.upload_file(
     image, bucket, key,
