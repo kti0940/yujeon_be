@@ -168,8 +168,9 @@
 - 마이페이지
 - 배포
 
-# 핵심기능
+# 프로젝트 기능
 1. [회원가입](https://github.com/kti0940/yujeon_be/blob/cf8fb852439841711ffa92684487220dfe8d7622/user/views.py#L25)
+2. [유화 이미지 업로드 및 그림 구매 소유권 이전](https://github.com/kti0940/yujeon_be/blob/cf8fb852439841711ffa92684487220dfe8d7622/post/views.py#L29)
 
 # 👨‍💻 Patch
 ## 🚩 ver.1.1
