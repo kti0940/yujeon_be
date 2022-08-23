@@ -169,8 +169,13 @@
 - 배포
 
 # 프로젝트 기능
-1. [회원가입](https://github.com/kti0940/yujeon_be/blob/cf8fb852439841711ffa92684487220dfe8d7622/user/views.py#L25)
-2. [유화 이미지 업로드 및 그림 구매 소유권 이전](https://github.com/kti0940/yujeon_be/blob/cf8fb852439841711ffa92684487220dfe8d7622/post/views.py#L29)
+1. [회원가입]([https://github.com/kti0940/yujeon_be/blob/cf8fb852439841711ffa92684487220dfe8d7622/user/views.py#L25](https://github.com/kti0940/yujeon_be/blob/cf8fb852439841711ffa92684487220dfe8d7622/user/views.py#L25))
+
+2. [유화 게시물 업로드]([https://github.com/kti0940/yujeon_be/blob/cf8fb852439841711ffa92684487220dfe8d7622/post/views.py#L22](https://github.com/kti0940/yujeon_be/blob/cf8fb852439841711ffa92684487220dfe8d7622/post/views.py#L22))
+
+3. [그림 구매 및 소유권 이전]([https://github.com/kti0940/yujeon_be/blob/cf8fb852439841711ffa92684487220dfe8d7622/post/views.py#L87](https://github.com/kti0940/yujeon_be/blob/cf8fb852439841711ffa92684487220dfe8d7622/post/views.py#L87))
+
+4. [좋아요]([https://github.com/kti0940/yujeon_be/blob/cf8fb852439841711ffa92684487220dfe8d7622/post/views.py#L59](https://github.com/kti0940/yujeon_be/blob/cf8fb852439841711ffa92684487220dfe8d7622/post/views.py#L59))
 
 # 👨‍💻 Patch
 ## 🚩 ver.1.1
