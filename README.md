@@ -166,8 +166,10 @@
 3. 황영상
 - 유화제작 모델 프로젝트 적용
 - 마이페이지
-- 배포 
+- 배포
 
+# 핵심기능
+1. [회원가입](https://github.com/kti0940/yujeon_be/blob/cf8fb852439841711ffa92684487220dfe8d7622/user/views.py#L25)
 
 # 👨‍💻 Patch
 ## 🚩 ver.1.1
